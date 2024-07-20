@@ -32,6 +32,7 @@ model Trigger {
   triggerId String
   type AvailableTrigger @relation(fields: [triggerId], references: [id])
   zap  Zap              @relation(fields: [zapId], references: [id])
+  sortingOrder Int
 }
 model AvailableTrigger {
   id String @id @default(uuid())
