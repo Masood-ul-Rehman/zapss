@@ -10,15 +10,15 @@ export default function Home() {
       <Header />
 
       <div className="text-center max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 ">
-        <h2 className="font-degular font-semibold text-7xl mt-32  text-black ">
-          Automate as fast as you can <br /> type
+        <h2 className="font-degular font-semibold xl:text-7xl md:text-6xl text-4xl md:mt-32 mt-16  text-black ">
+          Automate as fast as you can <br className="hidden md:block" /> type
         </h2>
-        <p className="mt-6 text-2xl font-medium text-black font-degular">
+        <p className="mt-6 md:text-2xl font-medium text-black font-degular">
           AI gives you automation superpowers, and Zapier puts them to work.
           Pairing AI and Zapier helps you turn ideas into workflows and bots
           that work for you.
         </p>
-        <div className="mt-10 flex justify-center  gap-8">
+        <div className="mt-10 flex justify-center flex-wrap  gap-8">
           <Button
             className="text-md  text-white font-bold bg-orange rounded-full w-[270px] h-[48px] px-6 hover:bg-orange hover:text-white"
             variant={"ghost"}
@@ -33,7 +33,7 @@ export default function Home() {
             Start free with Google
           </Button>
         </div>
-        <div className="flex items-center justify-center mt-16 gap-4 ">
+        <div className="flex items-center justify-center flex-wrap mt-16 gap-4 ">
           <div className="flex items-center gap-2 ">
             <CheckIcon size={16} />
             <h4 className="font-normal text-sm">
