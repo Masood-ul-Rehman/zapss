@@ -1,33 +1,55 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
-
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  font-family: "degular";
+}
+@font-face {
+  font-family: "Degular";
+  src:
+    url("/fonts/DegularDemo-Bold.woff2") format("woff2"),
+    url("/fonts/DegularDemo-Bold.woff") format("woff");
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+@font-face {
+  font-family: "Degular";
+  src:
+    url("/fonts/DegularDemo-Regular.woff2") format("woff2"),
+    url("/fonts/DegularDemo-Regular.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Degular";
+  src:
+    url("/fonts/DegularDemo-Medium.woff2") format("woff2"),
+    url("/fonts/DegularDemo-Medium.woff") format("woff");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Degular";
+  src:
+    url("/fonts/DegularDemo-Black.woff2") format("woff2"),
+    url("/fonts/DegularDemo-Black.woff") format("woff");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Degular";
+  src:
+    url("/fonts/DegularDemo-Semibold.woff2") format("woff2"),
+    url("/fonts/DegularDemo-Semibold.woff") format("woff");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
 }
