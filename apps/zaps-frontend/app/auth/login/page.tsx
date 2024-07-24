@@ -58,8 +58,8 @@ const page = () => {
                 </span>
               </div>
             </div>
-            <div className="mt-8 flex justify-center">
-              <GoogleLogin text="Continue with Google" width="w-full" />
+            <div className="mt-8 flex justify-center w-full">
+              <GoogleLogin text="Continue with Google" width="w-[400px]" />
             </div>
           </div>
         </div>

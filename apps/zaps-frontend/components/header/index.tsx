@@ -1,15 +1,14 @@
 import Link from "next/link";
 import React from "react";
-import { ChevronDown, Globe, LanguagesIcon, Navigation } from "lucide-react";
+import { Globe } from "lucide-react";
 import { NavigationMenuItems } from "./menu-items";
 import { Button } from "../ui/button";
+import Logo from "../logo";
 const Header = () => {
   return (
     <div className="flex justify-between w-full mx-auto px-10 py-2 sm:px-6 lg:px-8 border-b border-gray border-opacity-20 ">
       <div className="flex  items-baseline  gap-4">
-        <h2 className="text-3xl font-bold font-degular line-clamp-1">
-          <span className="text-orange font-black font-degular">_</span>zapss
-        </h2>
+        <Logo />
         <div className="xl:block hidden">
           <NavigationMenuItems />
         </div>
