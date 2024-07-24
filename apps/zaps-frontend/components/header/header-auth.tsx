@@ -3,7 +3,8 @@ import { Button } from "../ui/button";
 import Link from "next/link";
 import Logo from "../logo";
 
-const HeaderAuth = ({ type }: { type: "login" | "signup" }) => {
+const HeaderAuth = ({ type }: { type: string }) => {
+  console.log(type);
   return (
     <div className="border-b border-gray border-opacity-20">
       <div className="flex justify-between max-w-5xl mx-auto px-10 py-2 sm:px-6 lg:px-8  ">
@@ -20,7 +21,10 @@ const HeaderAuth = ({ type }: { type: "login" | "signup" }) => {
             </Link>
           ) : (
             <Link href={"/auth/signup"}>
-              <Button className="text-sm text-white font-medium bg-orange rounded-full h-[32px] px-6 hover:bg-background hover:border-grey hover:border-2">
+              <Button
+                variant={"ghost"}
+                className="text-sm text-white font-medium bg-orange rounded-full h-[32px] px-6 hover:bg-background hover:border-grey hover:border-2 hover:text-black"
+              >
                 Sign up
               </Button>
             </Link>
