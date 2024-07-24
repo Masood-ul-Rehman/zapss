@@ -16,7 +16,7 @@ const Header = () => {
       </div>
       <div className="flex items-center ">
         <Link href="/docs" className="text-grey xl:flex hidden">
-          <Button className="flex items-center gap-2">
+          <Button className="flex items-center gap-2" variant={"ghost"}>
             <Globe size={14} className="text-grey" />
             <h4 className="text-sm text-grey font-medium">
               Explare Integrations
