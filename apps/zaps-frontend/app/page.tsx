@@ -1,8 +1,8 @@
+import GoogleLogin from "@/components/google-login";
 import Header from "@/components/header";
 import { Button } from "@/components/ui/button";
-import GoogleIcon from "@/public/google.svg";
 import { CheckIcon } from "lucide-react";
-import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -19,19 +19,15 @@ export default function Home() {
           that work for you.
         </p>
         <div className="mt-10 flex justify-center flex-wrap  gap-8">
-          <Button
-            className="text-md  text-white font-bold bg-orange rounded-full w-[270px] h-[48px] px-6 hover:bg-orange hover:text-white"
-            variant={"ghost"}
-          >
-            Start free with email
-          </Button>
-          <Button
-            className="text-md flex gap-4   bg-white font-semibold border border-gray-300 rounded-full w-[270px] h-[48px]  px-6"
-            variant={"ghost"}
-          >
-            <Image src={GoogleIcon} alt="google" width={20} height={21} />
-            Start free with Google
-          </Button>
+          <Link href="/auth/signup">
+            <Button
+              className="text-md  text-white font-bold bg-orange rounded-full w-[270px] h-[48px] px-6 hover:bg-orange hover:text-white"
+              variant={"ghost"}
+            >
+              Start free with email
+            </Button>
+          </Link>
+          <GoogleLogin />
         </div>
         <div className="flex items-center justify-center flex-wrap mt-16 gap-4 ">
           <div className="flex items-center gap-2 ">
