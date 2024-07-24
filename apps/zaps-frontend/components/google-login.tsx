@@ -8,8 +8,7 @@ import { signIn } from "@/auth";
 const GoogleLogin = ({ text, width }: { text?: string; width?: string }) => {
   return (
     <form
-      method="POST"
-      action={async (e) => {
+      action={async () => {
         "use server";
         await signIn("google", {
           redirectTo: "/dashboard",
