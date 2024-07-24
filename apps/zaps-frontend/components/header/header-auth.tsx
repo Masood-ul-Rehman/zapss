@@ -1,5 +1,6 @@
 import React from "react";
 import { Button } from "../ui/button";
+import Link from "next/link";
 
 const HeaderAuth = ({ type }: { type: "login" | "signup" }) => {
   return (
@@ -11,17 +12,21 @@ const HeaderAuth = ({ type }: { type: "login" | "signup" }) => {
           </h2>
         </div>
         <div>
-          {type == "login" ? (
-            <Button
-              className="text-sm text-white font-medium bg-orange rounded-full h-[32px] px-6 hover:bg-background hover:border-grey hover:border-2"
-              variant={"ghost"}
-            >
-              Login
-            </Button>
+          {type == "signup" ? (
+            <Link href={"/auth/login"}>
+              <Button
+                className="text-sm text-white font-medium bg-orange rounded-full h-[32px] px-6 hover:bg-background hover:border-grey hover:border-2"
+                variant={"ghost"}
+              >
+                Login
+              </Button>
+            </Link>
           ) : (
-            <Button className="text-sm text-white font-medium bg-orange rounded-full h-[32px] px-6 hover:bg-background hover:border-grey hover:border-2">
-              Sign up
-            </Button>
+            <Link href={"/auth/signup"}>
+              <Button className="text-sm text-white font-medium bg-orange rounded-full h-[32px] px-6 hover:bg-background hover:border-grey hover:border-2">
+                Sign up
+              </Button>
+            </Link>
           )}
         </div>
       </div>

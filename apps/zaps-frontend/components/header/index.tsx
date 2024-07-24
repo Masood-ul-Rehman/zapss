@@ -29,12 +29,16 @@ const Header = () => {
         >
           Contact sales
         </Button>
-        <Button className="text-sm text-grey font-medium " variant={"ghost"}>
-          Login
-        </Button>
-        <Button className="text-sm text-white font-medium bg-orange rounded-full h-[32px] px-6">
-          Sign up
-        </Button>
+        <Link href={"/auth/login"}>
+          <Button className="text-sm text-grey font-medium " variant={"ghost"}>
+            Login
+          </Button>
+        </Link>
+        <Link href={"/auth/signup"}>
+          <Button className="text-sm text-white font-medium bg-orange rounded-full h-[32px] px-6">
+            Sign up
+          </Button>{" "}
+        </Link>
       </div>
     </div>
   );
