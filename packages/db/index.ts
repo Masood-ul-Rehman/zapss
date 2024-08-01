@@ -1,27 +1,6 @@
-import { Pool, neonConfig } from "@neondatabase/serverless";
-import { PrismaNeon } from "@prisma/adapter-neon";
-import { PrismaClient } from "@prisma/client";
-import ws from "ws";
+import { Pool } from '@neondatabase/serverless';
 
-neonConfig.webSocketConstructor = ws;
-const connectionString = `${process.env.DATABASE_URL}`;
-const prismaClientSingleton = () => {
-  const pool = new Pool({ connectionString });
-  const adapter = new PrismaNeon(pool);
-  const client = new PrismaClient({ adapter });
-  return client;
-};
-
-declare global {
-  // Allow global `prismaGlobal` to be used in TypeScript typically
-  var prismaGlobal: ReturnType<typeof prismaClientSingleton> | undefined;
-}
-
-const prisma: ReturnType<typeof prismaClientSingleton> =
-  globalThis.prismaGlobal ?? prismaClientSingleton();
-
-if (process.env.NODE_ENV !== "production") {
-  globalThis.prismaGlobal = prisma;
-}
-
-export default prisma;
+import { drizzle } from "drizzle-orm/neon-serverless";
+import * as schema from "./schema";
+const postgress = new Pool({ connectionString: `${process.env.DATABASE_URL}` });
+export const db = drizzle(postgress, { schema });

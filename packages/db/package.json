@@ -3,28 +3,17 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "migrate": "prisma migrate dev",
-    "generate": "prisma generate",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "description": "",
+  "devDependencies": {
+    "drizzle-kit": "^0.22.1",
+    "typescript": "^5.5.4"
+  },
   "dependencies": {
     "@neondatabase/serverless": "^0.9.4",
-    "@prisma/adapter-neon": "^5.17.0",
-    "@prisma/client": "^5.17.0",
-    "dotenv": "^16.4.5",
-    "ws": "^8.18.0"
-  },
-  "devDependencies": {
-    "@types/node": "^20.14.11",
-    "@types/ws": "^8.5.12",
-    "prisma": "^5.17.0",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.5.3"
-  },
-  "exports": {
-    "./client": "./index.ts"
+    "drizzle-orm": "^0.31.2"
   }
 }
