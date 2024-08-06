@@ -9,11 +9,11 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
-    "drizzle-kit": "^0.22.1",
+    "drizzle-kit": "^0.21.4",
     "typescript": "^5.5.4"
   },
   "dependencies": {
     "@neondatabase/serverless": "^0.9.4",
-    "drizzle-orm": "^0.31.2"
+    "drizzle-orm": "^0.30.10"
   }
 }

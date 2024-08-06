@@ -9,16 +9,18 @@ import {
   sessions,
   verificationTokens,
 } from "../../packages/db/schema";
+import { comparePasswords, saltAndHashPassword } from "./lib/utils";
+let data = db as any;
 export const { handlers, signIn, signOut, auth } = NextAuth({
-  adapter: DrizzleAdapter(
-    db as any,
-    {
-      usersTable: users,
-      accountsTable: accounts,
-      sessionsTable: sessions,
-      verificationTokensTable: verificationTokens,
-    } as any
-  ),
+  session: {
+    strategy: "jwt",
+  },
+  adapter: DrizzleAdapter(data, {
+    usersTable: users,
+    accountsTable: accounts,
+    sessionsTable: sessions,
+    verificationTokensTable: verificationTokens,
+  } as any),
   providers: [
     Google({
       clientId: process.env.CLIENT_ID,
@@ -36,23 +38,26 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           type: "password",
         },
       },
-      // async authorize(credentials, req) {
-      //   const user = await db.user.findFirst({
-      //     where: {
-      //       email: credentials.email,
-      //     },
-      //   });
 
-      //   if (!user) {
-      //     return null;
-      //   }
-
-      //   if (user.password !== credentials.password) {
-      //     return null;
-      //   }
-
-      //   return user;
-      // },
+      authorize(credentials) {
+        let user = null;
+        user = data.users.findFirst({
+          where: {
+            email: credentials.email,
+          },
+        });
+        if (!user) {
+          return null;
+        }
+        const pwHash = comparePasswords(
+          credentials.password as string,
+          user.password
+        );
+        if (!pwHash) {
+          return null;
+        }
+        return user;
+      },
     }),
   ],
 });

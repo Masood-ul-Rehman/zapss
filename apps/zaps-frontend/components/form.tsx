@@ -11,47 +11,121 @@ import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { z } from "zod";
-const signupForm = z.object({
-  userName: z.string().min(3),
+import { signIn } from "@/auth";
+import { db } from "../../../packages/db";
+import { saltAndHashPassword } from "@/lib/utils";
+import { FormField } from "./ui/form";
+const signupFormSchema = z.object({
+  name: z.string().min(3),
   email: z.string().email(),
   password: z.string().min(8),
 });
-const loginForm = z.object({
+const loginFormSchema = z.object({
   email: z.string().email(),
   password: z.string().min(8),
 });
-const AuthForm = ({ type }: { type: string }) => {
-  const schema = type == "signup" ? signupForm : loginForm;
-  const form = useForm<z.infer<typeof schema>>({
+type SignupFormValues = z.infer<typeof signupFormSchema>;
+type LoginFormValues = z.infer<typeof loginFormSchema>;
+type FormValues = SignupFormValues | LoginFormValues;
+
+const AuthForm = ({ type }: { type: "signup" | "login" }) => {
+  const schema = type === "signup" ? signupFormSchema : loginFormSchema;
+
+  const form = useForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: {},
   });
+  const onSubmit = async (data: FormValues) => {
+    console.log(data);
+    if (type == "signup") {
+      let database = db as any;
+      if (!data.email || !data.password) {
+        return;
+      }
+      try {
+        const existingUser = await database.users.findFirst({
+          where: {
+            email: data.email,
+          },
+        });
+        if (existingUser) {
+          return;
+        }
+        const hashedPassword = saltAndHashPassword(data.password);
+
+        await database.users.create({
+          data: {
+            // name: data.name,
+            email: data.email,
+            password: hashedPassword,
+            image: "",
+          },
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    } else if (type == "login") {
+      await signIn("credentials", {
+        data: { email: data.email, password: data.password },
+      });
+    }
+  };
   return (
     <div>
-      <form>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
         <FormProvider {...form}>
           <div className="w-[400px] mt-10">
             {type == "signup" && (
               <div className="space-y-2 text-left mt-4">
-                <Label>User name</Label>
-                <Input type="name" placeholder="johndoe" className="mt-8 " />
+                <FormField
+                  name="name"
+                  control={form.control}
+                  render={({ field }) => (
+                    <div className="space-y-2 text-left mt-4">
+                      <Label>Full name</Label>
+                      <Input
+                        type="name"
+                        placeholder="johndoe"
+                        className="mt-8 "
+                        {...field}
+                      />
+                    </div>
+                  )}
+                />
               </div>
             )}
             <div className="space-y-2 text-left mt-4">
-              <Label>Email</Label>
-              <Input
-                type="email"
-                placeholder="example@example.com"
-                className="mt-8 "
+              <FormField
+                name="email"
+                control={form.control}
+                render={({ field }) => (
+                  <div className="space-y-2 text-left mt-4">
+                    <Label>Email</Label>
+                    <Input
+                      type="email"
+                      placeholder="example@example.com"
+                      className="mt-8 "
+                      {...field}
+                    />
+                  </div>
+                )}
               />
             </div>
             <div className="space-y-2 text-left mt-4">
-              <Label>Password</Label>
-              <PasswordInput
+              <FormField
                 name="password"
-                required
-                autoComplete="current-password"
-                placeholder="********"
+                control={form.control}
+                render={({ field }) => (
+                  <div className="space-y-2 text-left mt-4">
+                    <Label>Password</Label>
+                    <PasswordInput
+                      required
+                      autoComplete="current-password"
+                      placeholder="********"
+                      {...field}
+                    />
+                  </div>
+                )}
               />
             </div>
             <div className="text-right">
@@ -61,6 +135,7 @@ const AuthForm = ({ type }: { type: string }) => {
             </div>
             <Button
               className="mt-4 w-full bg-orange rounded-full text-white font-degular font-semibold text-xl hover:bg-orange/90 hover:text-black"
+              type="submit"
               // variant="ghost"
             >
               Continue
