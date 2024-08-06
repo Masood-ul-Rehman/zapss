@@ -3,14 +3,22 @@ import Credentials from "next-auth/providers/credentials";
 import Google from "next-auth/providers/google";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import { db } from "../../packages/db/index";
-import { users, accounts, sessions, verificationTokens } from "../../packages/db/schema";
+import {
+  users,
+  accounts,
+  sessions,
+  verificationTokens,
+} from "../../packages/db/schema";
 export const { handlers, signIn, signOut, auth } = NextAuth({
-  adapter: DrizzleAdapter(db, {
-    usersTable: users,
-    accountsTable: accounts,
-    sessionsTable: sessions,
-    verificationTokensTable: verificationTokens,
-  }),
+  adapter: DrizzleAdapter(
+    db as any,
+    {
+      usersTable: users,
+      accountsTable: accounts,
+      sessionsTable: sessions,
+      verificationTokensTable: verificationTokens,
+    } as any
+  ),
   providers: [
     Google({
       clientId: process.env.CLIENT_ID,
