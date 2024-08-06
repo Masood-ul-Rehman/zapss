@@ -10,8 +10,8 @@ export default function Home() {
       <Header />
 
       <div className="text-center max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 ">
-        <h2 className="font-degular font-semibold xl:text-7xl md:text-6xl text-4xl md:mt-32 mt-16  text-black ">
-          Automate as fast as you can <br className="hidden md:block" /> type
+        <h2 className="font-degular font-semibold xl:text-7xl md:text-6xl text-4xl md:mt-32 mt-16  text-black">
+          Automate as fast as you can <br className="hidden md:inline" /> type
         </h2>
         <p className="mt-6 md:text-2xl font-medium text-black font-degular">
           AI gives you automation superpowers, and Zapier puts them to work.
