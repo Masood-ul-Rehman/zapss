@@ -5,29 +5,8 @@
     {
       "idx": 0,
       "version": "6",
-      "when": 1722975188758,
-      "tag": "0000_tiresome_the_order",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "6",
-      "when": 1723052485782,
-      "tag": "0001_careless_the_professor",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "6",
-      "when": 1723053201357,
-      "tag": "0002_same_mentallo",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "6",
-      "when": 1723054386771,
-      "tag": "0003_slim_wasp",
+      "when": 1723063208629,
+      "tag": "0000_icy_sue_storm",
       "breakpoints": true
     }
   ]

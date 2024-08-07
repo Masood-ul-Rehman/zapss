@@ -32,28 +32,57 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     }),
     Credentials({
       credentials: {
-        email: {},
-        password: {},
+        email: { label: "Email", type: "text" },
+        password: { label: "Password", type: "password" },
       },
 
       async authorize(credentials) {
-        console.log(credentials);
-        let user = null;
-        user = await db.query.users.findFirst({
-          where: eq(users.email, credentials.email as string),
-        });
-        if (!user) {
+        try {
+          console.log(credentials);
+          let user = await db.query.users.findFirst({
+            where: eq(users.email, credentials.email as string),
+          });
+          if (!user) return null;
+
+          const pwHash = comparePasswords(
+            credentials.password as string,
+            user.password as string
+          );
+          console.log(pwHash);
+          if (!pwHash) return null;
+
+          return user;
+        } catch (error) {
+          console.error("Authorization Error:", error);
           return null;
         }
-        const pwHash = comparePasswords(
-          credentials.password as string,
-          user.password as string
-        );
-        if (!pwHash) {
-          return null;
-        }
-        return user;
       },
     }),
   ],
+  callbacks: {
+    async signIn({ user, account, profile, email, credentials }) {
+      if (!user) {
+        return false;
+      }
+      return true;
+    },
+    async redirect({ url, baseUrl }) {
+      if (url.startsWith(baseUrl)) {
+        return `${baseUrl}/dashboard`;
+      }
+      return baseUrl;
+    },
+    async session({ session, token }) {
+      if (token?.id) {
+        session.user.id = token.id as string;
+      }
+      return session;
+    },
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+      }
+      return token;
+    },
+  },
 });

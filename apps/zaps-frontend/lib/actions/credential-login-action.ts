@@ -1,17 +1,23 @@
 "use server";
 import { signIn } from "@/auth";
-import { redirect } from "next/dist/server/api-utils";
 
 const credentialLoginAction = async (data: {
   email: string;
   password: string;
 }) => {
-  await signIn(
-    "credentials",
-    {
-      data: { email: data.email, password: data.password },
-    },
-    { redirect: "/dashboard" }
-  );
+  try {
+    const result = await signIn("credentials", {
+      redirect: false,
+      email: data.email,
+      password: data.password,
+    });
+    if (result.error) {
+      console.log(result.error);
+    } else {
+      console.log("logged in");
+    }
+  } catch (error) {
+    console.log(error);
+  }
 };
 export default credentialLoginAction;
