@@ -9,18 +9,22 @@ import {
   sessions,
   verificationTokens,
 } from "../../packages/db/schema";
-import { comparePasswords, saltAndHashPassword } from "./lib/utils";
-let data = db as any;
+import { comparePasswords } from "./lib/utils";
+import { eq } from "drizzle-orm";
+
 export const { handlers, signIn, signOut, auth } = NextAuth({
   session: {
     strategy: "jwt",
   },
-  adapter: DrizzleAdapter(data, {
-    usersTable: users,
-    accountsTable: accounts,
-    sessionsTable: sessions,
-    verificationTokensTable: verificationTokens,
-  } as any),
+  adapter: DrizzleAdapter(
+    db as any,
+    {
+      usersTable: users,
+      accountsTable: accounts,
+      sessionsTable: sessions,
+      verificationTokensTable: verificationTokens,
+    } as any
+  ),
   providers: [
     Google({
       clientId: process.env.CLIENT_ID,
@@ -28,30 +32,22 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     }),
     Credentials({
       credentials: {
-        email: {
-          label: "Email",
-          type: "email",
-          placeholder: "example@example.com",
-        },
-        password: {
-          label: "Password",
-          type: "password",
-        },
+        email: {},
+        password: {},
       },
 
-      authorize(credentials) {
+      async authorize(credentials) {
+        console.log(credentials);
         let user = null;
-        user = data.users.findFirst({
-          where: {
-            email: credentials.email,
-          },
+        user = await db.query.users.findFirst({
+          where: eq(users.email, credentials.email as string),
         });
         if (!user) {
           return null;
         }
         const pwHash = comparePasswords(
           credentials.password as string,
-          user.password
+          user.password as string
         );
         if (!pwHash) {
           return null;

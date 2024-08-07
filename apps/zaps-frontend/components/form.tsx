@@ -11,10 +11,12 @@ import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { z } from "zod";
-import { signIn } from "@/auth";
 import { db } from "../../../packages/db";
 import { saltAndHashPassword } from "@/lib/utils";
 import { FormField } from "./ui/form";
+import credentialLoginAction from "@/lib/actions/credential-login-action";
+import { eq } from "drizzle-orm";
+import { users } from "../../../packages/db/schema";
 const signupFormSchema = z.object({
   name: z.string().min(3),
   email: z.string().email(),
@@ -36,38 +38,33 @@ const AuthForm = ({ type }: { type: "signup" | "login" }) => {
     defaultValues: {},
   });
   const onSubmit = async (data: FormValues) => {
-    console.log(data);
     if (type == "signup") {
-      let database = db as any;
-      if (!data.email || !data.password) {
+      let formData = data as SignupFormValues;
+      if (!formData.email || !formData.password) {
         return;
       }
       try {
-        const existingUser = await database.users.findFirst({
-          where: {
-            email: data.email,
-          },
+        const existingUser = await db.query.users.findFirst({
+          where: eq(users.email, formData.email),
         });
+        console.log(existingUser);
         if (existingUser) {
           return;
         }
-        const hashedPassword = saltAndHashPassword(data.password);
-
-        await database.users.create({
-          data: {
-            // name: data.name,
-            email: data.email,
-            password: hashedPassword,
-            image: "",
-          },
+        const hashedPassword = saltAndHashPassword(formData.password);
+        console.log(hashedPassword);
+        await db.insert(users).values({
+          name: formData.name,
+          email: formData.email,
+          password: hashedPassword,
+          image: "",
+          emailVerified: false,
         });
       } catch (error) {
         console.log(error);
       }
     } else if (type == "login") {
-      await signIn("credentials", {
-        data: { email: data.email, password: data.password },
-      });
+      credentialLoginAction({ email: data.email, password: data.password });
     }
   };
   return (

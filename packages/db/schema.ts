@@ -4,16 +4,18 @@ import {
   text,
   primaryKey,
   integer,
+  boolean,
 } from "drizzle-orm/pg-core";
 
 export const users = pgTable("user", {
   id: text("id")
     .primaryKey()
     .$defaultFn(() => crypto.randomUUID()),
-  name: text("name"),
+  name: text("name").default(""),
   email: text("email").notNull(),
-  emailVerified: timestamp("emailVerified", { mode: "date" }),
-  image: text("image"),
+  password: text("password").default(""),
+  image: text("image").default(""),
+  emailVerified: boolean("emailVerified").default(false),
 });
 
 export const accounts = pgTable(
