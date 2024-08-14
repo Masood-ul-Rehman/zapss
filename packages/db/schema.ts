@@ -1,3 +1,4 @@
+import { relations } from "drizzle-orm";
 import {
   timestamp,
   pgTable,
@@ -64,137 +65,137 @@ export const verificationTokens = pgTable(
   })
 );
 
-// export const zaps = pgTable("zap", {
-//   id: text("id")
-//     .primaryKey()
-//     .$defaultFn(() => crypto.randomUUID()),
-//   triggerId: text("triggerId"),
-//   createdAt: timestamp("created_at", { mode: "date" }).$defaultFn(
-//     () => new Date()
-//   ),
-//   updatedAt: timestamp("updated_at", { mode: "date" })
-//     .$defaultFn(() => new Date())
-//     .$onUpdate(() => new Date()),
-// });
+export const zaps = pgTable("zap", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  triggerId: text("triggerId"),
+  createdAt: timestamp("created_at", { mode: "date" }).$defaultFn(
+    () => new Date()
+  ),
+  updatedAt: timestamp("updated_at", { mode: "date" })
+    .$defaultFn(() => new Date())
+    .$onUpdate(() => new Date()),
+});
 
-// export const triggers = pgTable("trigger", {
-//   id: text("id")
-//     .primaryKey()
-//     .$defaultFn(() => crypto.randomUUID()),
-//   zapId: text("zapId").unique(),
-//   triggerId: text("triggerId"),
-//   sortingOrder: integer("sortingOrder"),
-//   createdAt: timestamp("created_at", { mode: "date" }).$defaultFn(
-//     () => new Date()
-//   ),
-//   updatedAt: timestamp("updated_at", { mode: "date" })
-//     .$defaultFn(() => new Date())
-//     .$onUpdate(() => new Date()),
-// });
+export const triggers = pgTable("trigger", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  zapId: text("zapId").unique(),
+  triggerId: text("triggerId"),
+  sortingOrder: integer("sortingOrder"),
+  createdAt: timestamp("created_at", { mode: "date" }).$defaultFn(
+    () => new Date()
+  ),
+  updatedAt: timestamp("updated_at", { mode: "date" })
+    .$defaultFn(() => new Date())
+    .$onUpdate(() => new Date()),
+});
 
-// export const availableTriggers = pgTable("available_trigger", {
-//   id: text("id")
-//     .primaryKey()
-//     .$defaultFn(() => crypto.randomUUID()),
-//   name: text("name").notNull(),
-// });
+export const availableTriggers = pgTable("available_trigger", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  name: text("name").notNull(),
+});
 
-// export const actions = pgTable("action", {
-//   id: text("id")
-//     .primaryKey()
-//     .$defaultFn(() => crypto.randomUUID()),
-//   zapId: text("zapId").notNull(),
-//   actionId: text("actionId").notNull(),
-//   createdAt: timestamp("created_at", { mode: "date" }).$defaultFn(
-//     () => new Date()
-//   ),
-//   updatedAt: timestamp("updated_at", { mode: "date" })
-//     .$defaultFn(() => new Date())
-//     .$onUpdate(() => new Date()),
-// });
+export const actions = pgTable("action", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  zapId: text("zapId").notNull(),
+  actionId: text("actionId").notNull(),
+  createdAt: timestamp("created_at", { mode: "date" }).$defaultFn(
+    () => new Date()
+  ),
+  updatedAt: timestamp("updated_at", { mode: "date" })
+    .$defaultFn(() => new Date())
+    .$onUpdate(() => new Date()),
+});
 
-// export const availableActions = pgTable("available_action", {
-//   id: text("id")
-//     .primaryKey()
-//     .$defaultFn(() => crypto.randomUUID()),
-//   name: text("name").notNull(),
-// });
+export const availableActions = pgTable("available_action", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  name: text("name").notNull(),
+});
 
-// export const zapRuns = pgTable("zap_run", {
-//   id: text("id")
-//     .primaryKey()
-//     .$defaultFn(() => crypto.randomUUID()),
-//   zapId: text("zapId").notNull(),
-//   createdAt: timestamp("created_at", { mode: "date" }).$defaultFn(
-//     () => new Date()
-//   ),
-//   updatedAt: timestamp("updated_at", { mode: "date" })
-//     .$defaultFn(() => new Date())
-//     .$onUpdate(() => new Date()),
-// });
+export const zapRuns = pgTable("zap_run", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  zapId: text("zapId").notNull(),
+  createdAt: timestamp("created_at", { mode: "date" }).$defaultFn(
+    () => new Date()
+  ),
+  updatedAt: timestamp("updated_at", { mode: "date" })
+    .$defaultFn(() => new Date())
+    .$onUpdate(() => new Date()),
+});
 
-// export const zapRunOutboxes = pgTable("zap_run_outbox", {
-//   id: text("id")
-//     .primaryKey()
-//     .$defaultFn(() => crypto.randomUUID()),
-//   zapRunId: text("zapRunId").unique().notNull(),
-// });
+export const zapRunOutboxes = pgTable("zap_run_outbox", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  zapRunId: text("zapRunId").unique().notNull(),
+});
 
-// // Relations for Zap and related tables
-// // export const zapRelations = relations(zaps, ({ many, one }) => ({
-// //   trigger: one(triggers, {
-// //     fields: [zaps.triggerId],
-// //     references: [triggers.id],
-// //   }),
-// //   actions: many(actions),
-// //   zapRuns: many(zapRuns),
-// // }));
+// Relations for Zap and related tables
+export const zapRelations = relations(zaps, ({ many, one }) => ({
+  trigger: one(triggers, {
+    fields: [zaps.triggerId],
+    references: [triggers.id],
+  }),
+  actions: many(actions),
+  zapRuns: many(zapRuns),
+}));
 
-// // export const triggerRelations = relations(triggers, ({ one }) => ({
-// //   zap: one(zaps, {
-// //     fields: [triggers.zapId],
-// //     references: [zaps.id],
-// //   }),
-// //   type: one(availableTriggers, {
-// //     fields: [triggers.triggerId],
-// //     references: [availableTriggers.id],
-// //   }),
-// // }));
+export const triggerRelations = relations(triggers, ({ one }) => ({
+  zap: one(zaps, {
+    fields: [triggers.zapId],
+    references: [zaps.id],
+  }),
+  type: one(availableTriggers, {
+    fields: [triggers.triggerId],
+    references: [availableTriggers.id],
+  }),
+}));
 
-// // export const actionRelations = relations(actions, ({ one }) => ({
-// //   zap: one(zaps, {
-// //     fields: [actions.zapId],
-// //     references: [zaps.id],
-// //   }),
-// //   type: one(availableActions, {
-// //     fields: [actions.actionId],
-// //     references: [availableActions.id],
-// //   }),
-// // }));
+export const actionRelations = relations(actions, ({ one }) => ({
+  zap: one(zaps, {
+    fields: [actions.zapId],
+    references: [zaps.id],
+  }),
+  type: one(availableActions, {
+    fields: [actions.actionId],
+    references: [availableActions.id],
+  }),
+}));
 
-// // export const zapRunRelations = relations(zapRuns, ({ one }) => ({
-// //   zap: one(zaps, {
-// //     fields: [zapRuns.zapId],
-// //     references: [zaps.id],
-// //   }),
-// //   zapRunOutbox: one(zapRunOutboxes, {
-// //     fields: [zapRuns.id],
-// //     references: [zapRunOutboxes.zapRunId],
-// //   }),
-// // }));
+export const zapRunRelations = relations(zapRuns, ({ one }) => ({
+  zap: one(zaps, {
+    fields: [zapRuns.zapId],
+    references: [zaps.id],
+  }),
+  zapRunOutbox: one(zapRunOutboxes, {
+    fields: [zapRuns.id],
+    references: [zapRunOutboxes.zapRunId],
+  }),
+}));
 
-// // Define the Run model
-// export const runs = pgTable("run", {
-//   id: text("id")
-//     .primaryKey()
-//     .$defaultFn(() => crypto.randomUUID()),
-//   zapRunId: text("zapRunId").notNull(),
-//   status: text("status").notNull(),
-//   error: text("error"),
-//   createdAt: timestamp("created_at", { mode: "date" }).$defaultFn(
-//     () => new Date()
-//   ),
-//   updatedAt: timestamp("updated_at", { mode: "date" })
-//     .$defaultFn(() => new Date())
-//     .$onUpdate(() => new Date()),
-// });
+// Define the Run model
+export const runs = pgTable("run", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  zapRunId: text("zapRunId").notNull(),
+  status: text("status").notNull(),
+  error: text("error"),
+  createdAt: timestamp("created_at", { mode: "date" }).$defaultFn(
+    () => new Date()
+  ),
+  updatedAt: timestamp("updated_at", { mode: "date" })
+    .$defaultFn(() => new Date())
+    .$onUpdate(() => new Date()),
+});
